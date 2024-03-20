@@ -122,35 +122,42 @@ class HBNBCommand(cmd.Cmd):
 	"""
         try:
             class_name = args.split(" ")[0]
-        except IndexError:
-            pass
 
-        if not class_name:
-            print("** class name missing **")
-            return
-        elif class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        attr_list = args.split(" ")
+            if not class_name:
+                print("** class name missing **")
+                return
+            elif class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        new_instance = eval(class_name)
+            kwargs = {}
+            attr_list = args.split(" ")
 
-        for i in range(1, len(attr_list)):
-            key, value = tuple(attr_list[i].split("="))
-            if value.startswith('"'):
-                value = value.strip('"').replace("_", " ")
+            for i in range(1, len(attr_list)):
+                key = attr_list[i].split("=")[0]
+                value = attr_list[i].split("=")[1]
+
+                if value.startswith('"'):
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+
+
+            if kwargs == {}:
+                new_instance = eval(class_name)
             else:
-                try:
-                    value = eval(value)
-                except Exception:
-                    print("Couldn't evaluate <value>")
-                    pass
-        if hasattr(new_instance, key):
-            setattr(new_instance, key, value)
+                new_instance = eval(class_name)(**kwargs)
 
-        storage.new(new_instance)
-        print(new_instance.id)
-        new_instance.save()
+            storage.new(new_instance)
+            print(new_instance.id)
+            new_instance.save()
+        except ValueError:
+            print(ValueError)
+            return
 
 
     def help_create(self):
