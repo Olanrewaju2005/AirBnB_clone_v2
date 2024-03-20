@@ -17,8 +17,11 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                if hasattr(self, key):
-                    setattr(self, key, value)
+                try:
+                    if hasattr(self, key):
+                        setattr(self, key, value)
+                except TypeError:
+                    pass
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -41,3 +44,10 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+    def delete(self):
+        """
+			            
+        """
+        from models import storage
+        storage.delete(self)

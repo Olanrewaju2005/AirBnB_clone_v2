@@ -22,13 +22,14 @@ class FileStorage:
 	Args:
             cls: if included, only models of tha particular class are returned
         """
-        if cls:
+        if cls is None:
+            return FileStorage.__objects
+        else:
             if isinstance(cls, str):
                 cls = globals().get(cls)
             if cls and issubclass(cls, BaseModel):
-                cls_dict = {k: v for k, v in in self.__objects.items() if isinstance(v, cls)}
+                cls_dict = {k: v for k, v in self.__objects.items() if isinstance(v, cls)}
                 return cls_dict
-        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -57,6 +58,8 @@ class FileStorage:
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
             pass
 
     def delete(self, obj=None):
