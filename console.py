@@ -114,12 +114,12 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ 
-	Create an object of any class
-        
-	Usage: create <Class name> <param 1> <param 2> <param 3>...
-	Parameter: <key name>=<value>
-	"""
+        """
+        Create an object of any class
+
+        Usage: create <Class name> <param 1> <param 2> <param 3>...
+        Parameter: <key name>=<value>
+        """
         try:
             class_name = args.split(" ")[0]
 
@@ -146,7 +146,6 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 kwargs[key] = value
 
-
             if kwargs == {}:
                 new_instance = eval(class_name)
             else:
@@ -158,7 +157,6 @@ class HBNBCommand(cmd.Cmd):
         except ValueError:
             print(ValueError)
             return
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -221,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -350,7 +348,9 @@ class HBNBCommand(cmd.Cmd):
         new_dict.save()  # save updates to file
 
     def help_update(self):
+        
         """ Help information for the update class """
+        
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
