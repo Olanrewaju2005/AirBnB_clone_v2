@@ -94,5 +94,9 @@ class DBStorage:
         Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = sscoped_session(session_factory)
+        Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self)
+        """ Calls remove() """
+        self.__session.close()

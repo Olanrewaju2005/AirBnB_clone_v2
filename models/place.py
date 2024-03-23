@@ -5,9 +5,15 @@ from sqlalchemy import ForeignKey, String, Column, Integer, Float, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from os import getenv
-import models
 
 place_amenity = Table("place_amenity", Base.metadata, Column("place_id", String(60), ForeignKey("places.id"), primary_key=True, nullable=False), Column("amenity_id", String(60), ForeignKey("amenities.id"), primary_key=True, nullable=False))
+
+class Review(BaseModel, Base):
+    """This is the class for Review"""
+    __tablename__ = "reviews"
+    text = Column(String(1024), nullable=False)
+    place_id = Column(String(60), ForeignKey("places.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
 
 class Place(BaseModel, Base):
     """ A place to stay """
