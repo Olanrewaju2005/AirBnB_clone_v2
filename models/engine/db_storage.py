@@ -70,7 +70,6 @@ class DBStorage:
         add the object to the current database session
         """
         self.__session.add(obj)
-        self.__session.commit()
 
     def save(self):
         """
@@ -97,6 +96,6 @@ class DBStorage:
         Session = scoped_session(session_factory)
         self.__session = Session()
 
-    def close(self)
+    def close(self):
         """ Calls remove() """
         self.__session.close()
